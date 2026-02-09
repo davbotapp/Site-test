@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tâches Quotidiennes</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:radial-gradient(circle at top,#2a0040,#120018);
+  color:white;
+}
+nav{
+  display:flex;
+  justify-content:space-around;
+  padding:15px;
+  background:#2f0055;
+  box-shadow:0 4px 15px rgba(0,0,0,0.7);
+}
+nav a{color:white;text-decoration:none;font-weight:bold}
+.container{
+  max-width:500px;
+  margin:50px auto;
+}
+.task-box{
+  background:rgba(90,0,150,0.95);
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 0 40px rgba(200,120,255,0.7);
+}
+.task-box.locked{
+  opacity:0.5;
+}
+h2{
+  margin-bottom:10px;
+}
+#question{
+  font-size:1.5rem;
+  margin:20px 0;
+}
+input{
+  width:80%;
+  padding:12px;
+  border-radius:10px;
+  border:none;
+  text-align:center;
+  font-size:1.1rem;
+}
+button{
+  margin-top:15px;
+  width:80%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#c77dff,#9b5de5);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 20px rgba(255,200,255,0.6);
+}
+#timer,#status{
+  margin-top:15px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a href="index.html">Accueil</a>
+  <a href="taches.html">Tâches</a>
+  <a href="vip.html">VIP</a>
+  <a href="profil.html">Profil</a>
+</nav>
+
+<div class="container">
+  <div class="task-box" id="box">
+    <h2>🧠 Tâche Quotidienne</h2>
+    <div id="question">Chargement...</div>
+    <input type="number" id="answer" placeholder="Votre réponse">
+    <button onclick="submitTask()">Valider</button>
+    <div id="timer"></div>
+    <div id="status"></div>
+  </div>
+</div>
+
+<script>
+// --- Vérification utilisateur ---
+let user = JSON.parse(localStorage.getItem("user"));
+if(!user){
+  alert("❌ Vous devez créer un compte.");
+  location.href="index.html";
+}
+
+// --- Gestion 2 tâches / jour ---
+const today = new Date().toDateString();
+let taskData = JSON.parse(localStorage.getItem("dailyTasks")) || {
+  date: today,
+  count: 0
+};
+
+if(taskData.date !== today){
+  taskData = {date: today, count: 0};
+  localStorage.setItem("dailyTasks", JSON.stringify(taskData));
+}
+
+const box = document.getElementById("box");
+const questionEl = document.getElementById("question");
+const input = document.getElementById("answer");
+const status = document.getElementById("status");
+const timerEl = document.getElementById("timer");
+
+let solution = 0;
+let time = 20;
+let interval;
+
+// --- Génération calcul très difficile ---
+function generateTask(){
+  const a = Math.floor(Math.random()*900)+100;
+  const b = Math.floor(Math.random()*900)+100;
+  const c = Math.floor(Math.random()*90)+10;
+  const d = Math.floor(Math.random()*50)+5;
+
+  solution = Math.floor((a*b)/(c+d));
+  questionEl.innerText = `(${a} × ${b}) ÷ (${c} + ${d}) = ?`;
+}
+
+// --- Timer ---
+function startTimer(){
+  timerEl.innerText = "⏱️ Temps : 20s";
+  interval = setInterval(()=>{
+    time--;
+    timerEl.innerText = "⏱️ Temps : "+time+"s";
+    if(time<=0){
+      clearInterval(interval);
+      failTask();
+    }
+  },1000);
+}
+
+// --- Démarrage ---
+function startTask(){
+  generateTask();
+  startTimer();
+}
+
+// --- Échec ---
+function failTask(){
+  taskData.count++;
+  localStorage.setItem("dailyTasks", JSON.stringify(taskData));
+  status.innerText = "❌ Temps écoulé";
+  input.disabled = true;
+}
+
+// --- Validation ---
+function submitTask(){
+  clearInterval(interval);
+  taskData.count++;
+  localStorage.setItem("dailyTasks", JSON.stringify(taskData));
+
+  if(parseInt(input.value) === solution){
+    status.innerText = "🎉 Succès (rare)";
+    user.coins += 500;
+    localStorage.setItem("user", JSON.stringify(user));
+  }else{
+    status.innerText = "❌ Mauvaise réponse";
+  }
+  input.disabled = true;
+}
+
+// --- Blocage après 2 tâches ---
+if(taskData.count >= 2){
+  box.classList.add("locked");
+  questionEl.innerText = "🔒 Limite atteinte (2 tâches aujourd’hui)";
+  input.disabled = true;
+}else{
+  startTask();
+}
+</script>
+
+</body>
+</html>
