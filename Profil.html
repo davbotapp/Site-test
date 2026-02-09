@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil VIP</title>
+<style>
+body {
+  margin:0;
+  font-family:'Arial',sans-serif;
+  background: radial-gradient(circle at top,#3b0066,#1a001f);
+  color:white;
+  overflow-x:hidden;
+}
+nav {
+  display:flex;
+  justify-content:space-around;
+  padding:15px;
+  background:#3a0066;
+  box-shadow:0 4px 15px rgba(0,0,0,0.7);
+}
+nav a {color:white;text-decoration:none;font-weight:bold;transition:0.3s;}
+nav a:hover {color:#c77dff;}
+.container {
+  max-width:600px;
+  margin:50px auto;
+  perspective:1200px;
+}
+.card {
+  background: rgba(80,0,130,0.95);
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(199,125,255,0.7);
+  transition: transform 0.6s ease, box-shadow 0.6s ease;
+  transform-style: preserve-3d;
+}
+.card:hover {
+  transform: rotateY(15deg) rotateX(5deg) scale(1.05);
+  box-shadow:0 25px 50px rgba(199,125,255,0.9);
+}
+#profilePicContainer {
+  perspective:800px; /* garde la photo stable */
+  display:inline-block;
+}
+#profilePic {
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid #c77dff;
+  margin-bottom:20px;
+  box-shadow:0 0 20px #c77dff;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+#profilePic:hover {
+  transform: scale(1.05);
+  box-shadow:0 0 30px #ff99ff, 0 0 60px #c77dff;
+}
+h2,h3 {margin:10px 0;animation:fadeInUp 1s ease;}
+.coins, .fc {
+  font-size:2rem;
+  font-weight:bold;
+  margin:10px 0;
+  padding:10px 0;
+  border-radius:12px;
+  background:linear-gradient(135deg,#c77dff,#9b5de5);
+  box-shadow:0 0 15px rgba(255,255,255,0.6);
+  transition:0.5s;
+}
+.coins:hover, .fc:hover {
+  transform:scale(1.05);
+  box-shadow:0 0 25px rgba(255,200,255,0.8);
+}
+button {
+  width:80%;
+  padding:15px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#c77dff,#9b5de5);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  margin:15px auto;
+  display:block;
+  transition:0.4s;
+  box-shadow:0 5px 15px rgba(199,125,255,0.5);
+}
+button:hover {
+  background:linear-gradient(135deg,#9b5de5,#c77dff);
+  transform:scale(1.05);
+  box-shadow:0 8px 20px rgba(255,200,255,0.7);
+}
+button:active {transform:scale(0.98);}
+@keyframes fadeInUp {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Accueil</a>
+  <a href="taches.html">Tâches</a>
+  <a href="vip.html">VIP</a>
+  <a href="profil.html">Profil</a>
+</nav>
+
+<div class="container">
+  <div class="card" id="profileCard">
+    <div id="profilePicContainer">
+      <img id="profilePic" src="" alt="Photo Profil">
+    </div>
+    <h2 id="userName"></h2>
+    <h3 id="userToken"></h3>
+    <div class="coins" id="coinsDisplay">Coins : 0</div>
+    <div class="fc" id="fcDisplay">Montant FC : 0 FC</div>
+    <button id="withdrawBtn">💰 Retirer de l'argent via WhatsApp</button>
+  </div>
+</div>
+
+<script>
+// --- Vérification utilisateur ---
+let user = JSON.parse(localStorage.getItem("user"));
+if(!user){
+  alert("❌ Vous devez créer un compte pour accéder au profil !");
+  window.location.href = "index.html";
+}
+
+// --- Conversion Coins -> FC selon jeton ---
+function coinsToFC(coins, token){
+  switch(token){
+    case "G1": return coins*0.1;
+    case "G2": return coins*0.4;
+    case "G3": return coins*0.7;
+    case "G4": return coins*1;
+    default: return 0;
+  }
+}
+
+// --- Affichage profil ---
+document.getElementById("profilePic").src = user.photo;
+document.getElementById("userName").innerText = user.name;
+document.getElementById("userToken").innerText = "Jeton : "+user.token;
+document.getElementById("coinsDisplay").innerText = "Coins : "+user.coins;
+document.getElementById("fcDisplay").innerText = "Montant FC : "+coinsToFC(user.coins,user.token).toLocaleString()+" FC";
+
+// --- Retrait WhatsApp ---
+document.getElementById("withdrawBtn").onclick = ()=>{
+  const fcAmount = coinsToFC(user.coins,user.token);
+  if(fcAmount < 15000){
+    alert("❌ Vous devez avoir au moins 15.000 FC pour effectuer un retrait.");
+    return;
+  }
+  const whatsappNumber = "+243900427509";
+  const message = `Bonjour, je souhaite retirer mon argent VIP.\nNom: ${user.name}\nMontant: ${fcAmount.toLocaleString()} FC\nCoins: ${user.coins}\nJeton: ${user.token}`;
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  window.open(url,"_blank");
+  alert("✅ Formulaire ouvert sur WhatsApp pour le retrait.");
+};
+</script>
+
+</body>
+</html>
