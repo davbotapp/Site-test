@@ -1,159 +1,247 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Design Moderne or Exercice</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }body {
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: #fff;
-  min-height: 100vh;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accueil - Jeu VIP</title>
+<style>
+body {
+  margin:0;
+  font-family:'Arial',sans-serif;
+  background: linear-gradient(135deg,#2b0040,#6a0dad);
+  color:white;
+  overflow-x:hidden;
 }
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 25px 60px;
+nav {
+  display:flex;
+  justify-content:space-around;
+  padding:15px;
+  background:#3a0066;
+  box-shadow:0 4px 10px rgba(0,0,0,0.5);
 }
-
-header h1 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+nav a {color:white;text-decoration:none;font-weight:bold;transition:0.2s;}
+nav a:hover {color:#c77dff;}
+.container {max-width:600px;margin:40px auto;padding:20px;perspective:1000px;}
+.card {
+  background: rgba(75,0,130,0.85);
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+  text-align:center;
+  transform-style: preserve-3d;
+  transition: transform 0.4s, box-shadow 0.4s;
+  box-shadow:0 8px 20px rgba(0,0,0,0.5);
 }
-
-nav a {
-  color: #fff;
-  text-decoration: none;
-  margin-left: 25px;
-  font-weight: 400;
-  transition: opacity 0.3s;
+.card:hover {
+  transform: rotateY(5deg) translateY(-5px);
+  box-shadow:0 12px 25px rgba(199,125,255,0.5);
 }
-
-nav a:hover {
-  opacity: 0.7;
+input, select {
+  width:80%;
+  padding:10px;
+  border-radius:6px;
+  border:none;
+  margin:10px 0;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  transition:0.2s;
 }
-
-.hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 80px 60px;
-  gap: 40px;
+input:focus {outline:none;box-shadow:0 0 8px #c77dff;}
+button {
+  width:80%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#c77dff;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:10px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  transition:0.3s;
 }
-
-.hero-text {
-  max-width: 550px;
+button:hover {background:#9b5de5;transform:scale(1.05);}
+button:active {transform:scale(0.98);}
+.hide {display:none;}
+h2 {margin-bottom: 15px;animation:fadeIn 1s;}
+@keyframes fadeIn {from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+#preview {width:120px;height:120px;border-radius:50%;margin:10px auto;object-fit:cover;border:2px solid #c77dff;}
+#welcomeMsg, #jackpotMsg {
+  position:fixed;top:30%;left:50%;transform:translate(-50%, -50%);
+  background:rgba(199,125,255,0.9);padding:20px 40px;border-radius:15px;
+  font-size:1.5rem;text-align:center;opacity:0;animation:fadeInOut 5s forwards;
+  box-shadow:0 0 30px rgba(255,255,255,0.7);
+  z-index:1000;
 }
-
-.hero-text h2 {
-  font-size: 3rem;
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 20px;
+@keyframes fadeInOut {
+  0%{opacity:0; transform:translate(-50%, -70%) scale(0.5);}
+  20%{opacity:1; transform:translate(-50%, -50%) scale(1.05);}
+  80%{opacity:1; transform:translate(-50%, -50%) scale(1);}
+  100%{opacity:0; transform:translate(-50%, -30%) scale(0.5);}
 }
-
-.hero-text p {
-  font-size: 1.1rem;
-  opacity: 0.9;
-  margin-bottom: 35px;
-}
-
-.hero-text button {
-  padding: 15px 35px;
-  border: none;
-  border-radius: 30px;
-  background: #00c6ff;
-  color: #000;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.hero-text button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-.hero-card {
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 40px;
-  width: 320px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
-
-.hero-card h3 {
-  margin-bottom: 15px;
-  font-size: 1.4rem;
-}
-
-.hero-card p {
-  font-size: 0.95rem;
-  opacity: 0.85;
-}
-
-footer {
-  text-align: center;
-  padding: 30px;
-  font-size: 0.85rem;
-  opacity: 0.7;
-}
-
-@media (max-width: 900px) {
-  .hero {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  header {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  nav a {
-    margin: 0 10px;
-  }
-}
-
-  </style>
+</style>
 </head>
-<body>  <header>
-    <h1>DGR Studio</h1>
-    <nav>
-      <a href="#">Accueil</a>
-      <a href="#">À propos</a>
-      <a href="#">Services</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>  <section class="hero">
-    <div class="hero-text">
-      <h2>Un design moderne pour s'exercer</h2>
-      <p>
-        Cette page est un exemple de landing page moderne avec un style
-        professionnel, des effets visuels propres et une bonne disposition.
-      </p>
-      <button>Commencer</button>
-    </div><div class="hero-card">
-  <h3>Pourquoi ce design ?</h3>
-  <p>
-    • Minimaliste<br>
-    • Moderne<br>
-    • Responsive<br>
-    • Parfait pour l'entraînement
-  </p>
+<body>
+
+<nav>
+  <a href="index.html">Accueil</a>
+  <a href="taches.html">Tâches</a>
+  <a href="vip.html">VIP</a>
+  <a href="profil.html">Profil</a>
+  <a href="#" id="logoutBtn">Déconnexion</a>
+</nav>
+
+<div class="container">
+
+<div class="card" id="createAccountCard">
+  <h2>Créer un compte VIP</h2>
+  <input type="text" id="name" placeholder="Nom">
+  <input type="password" id="password" placeholder="Mot de passe">
+  <input type="password" id="confirmPassword" placeholder="Confirmer mot de passe">
+  <p>Sélectionnez votre photo :</p>
+  <input type="file" id="photoInput" accept="image/*">
+  <img id="preview" src="" alt="Aperçu photo" class="hide">
+  <input type="text" id="token" placeholder="Votre jeton">
+  <button id="createBtn">Créer le compte</button>
+  <p>Pas de jeton ? Demandez-le via WhatsApp :</p>
+  <button id="requestTokenBtn">Demander un jeton via WhatsApp</button>
 </div>
 
-  </section>  <footer>
-    © 2025 – Exercice design web
-  </footer></body>
+<div class="card hide" id="welcomeCard">
+  <h2>Bienvenue <span id="userNameDisplay"></span> !</h2>
+  <p>Votre compte a été créé avec succès. Accédez à vos tâches, profil et niveau VIP.</p>
+  <button onclick="goTo('profil.html')">Profil</button>
+  <button onclick="goTo('taches.html')">Tâches</button>
+  <button onclick="goTo('vip.html')">VIP</button>
+</div>
+
+<div id="welcomeMsg" class="hide">✨ Bienvenue dans le monde VIP ! ✨</div>
+<div id="jackpotMsg" class="hide">🎉 Tentez votre chance pour gagner le jackpot 200.000.000 FC ! 🎉</div>
+
+</div>
+
+<script>
+// --- Prévisualisation photo ---
+const photoInput = document.getElementById("photoInput");
+const preview = document.getElementById("preview");
+photoInput.addEventListener("change", function(){
+  const file = this.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      preview.src = e.target.result;
+      preview.classList.remove("hide");
+    }
+    reader.readAsDataURL(file);
+  }
+});
+
+// --- Vérification utilisateur ---
+let user = JSON.parse(localStorage.getItem("user"));
+if(user){
+  const now = new Date();
+  const created = new Date(user.creationDate || now);
+  const diffDays = Math.floor((now - created)/ (1000*60*60*24));
+  if(diffDays>=30){
+    alert("❌ Votre jeton a expiré (30 jours). Veuillez demander un nouveau jeton.");
+    localStorage.removeItem("user");
+    localStorage.removeItem("invalidTokens");
+    user = null;
+  }
+}
+if(user){
+  document.getElementById("createAccountCard").classList.add("hide");
+  document.getElementById("welcomeCard").classList.remove("hide");
+  document.getElementById("userNameDisplay").innerText = user.name;
+}
+
+// --- Création de compte ---
+document.getElementById("createBtn").onclick = ()=>{
+  const name = document.getElementById("name").value.trim();
+  const password = document.getElementById("password").value;
+  const confirm = document.getElementById("confirmPassword").value;
+  const token = document.getElementById("token").value.trim();
+
+  if(!name || !password || !confirm || !token || !preview.src){
+    alert("❌ Veuillez remplir tous les champs et sélectionner une photo valide.");
+    return;
+  }
+  if(password!==confirm){
+    alert("❌ Les mots de passe ne correspondent pas !");
+    return;
+  }
+  const validTokens = ["G1","G2","G3","G4"];
+  if(!validTokens.includes(token)){
+    alert("❌ Jeton invalide. Demandez un jeton via WhatsApp.");
+    return;
+  }
+
+  user = {
+    name:name,
+    password:password,
+    photo:preview.src,
+    token:token,
+    coins:0,
+    pendingReward:0,
+    lastTaskDate:"1970-01-01",
+    taskDay:1,
+    dailyTaskDone:false,
+    creationDate: new Date().toISOString()
+  };
+  localStorage.setItem("user",JSON.stringify(user));
+  localStorage.setItem("invalidTokens", JSON.stringify([token]));
+  document.getElementById("createAccountCard").classList.add("hide");
+  document.getElementById("welcomeCard").classList.remove("hide");
+  document.getElementById("userNameDisplay").innerText = user.name;
+
+  // --- Animations bienvenue ---
+  const welcomeMsg = document.getElementById("welcomeMsg");
+  const jackpotMsg = document.getElementById("jackpotMsg");
+  welcomeMsg.classList.remove("hide");
+  jackpotMsg.classList.remove("hide");
+  setTimeout(()=>{welcomeMsg.classList.add("hide");},5000);
+  setTimeout(()=>{jackpotMsg.classList.add("hide");},7000);
+};
+
+// --- Demande jeton WhatsApp ---
+document.getElementById("requestTokenBtn").onclick = ()=>{
+  const whatsappNumber = "+243900427509";
+  const message = "Bonjour, je souhaite obtenir un jeton pour créer un compte VIP.";
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  window.open(url,"_blank");
+};
+
+// --- Redirection ---
+function goTo(page){
+  if(!user){ alert("❌ Vous devez créer un compte pour accéder à cette page."); return; }
+  const invalidTokens = JSON.parse(localStorage.getItem("invalidTokens")||"[]");
+  if(!invalidTokens.includes(user.token)){
+    alert("❌ Votre jeton n'est plus valide. Veuillez demander un nouveau jeton.");
+    return;
+  }
+  window.location.href = page;
+}
+
+// --- Déconnexion avec invalidation immédiate jeton ---
+document.getElementById("logoutBtn").onclick = ()=>{
+  if(user){
+    const confirmLogout = confirm("⚠️ Si vous vous déconnectez maintenant, votre jeton deviendra invalide et vous perdrez l'accès au compte. Continuer ?");
+    if(confirmLogout){
+      let invalidTokens = JSON.parse(localStorage.getItem("invalidTokens")||"[]");
+      invalidTokens = invalidTokens.filter(t=>t!==user.token);
+      localStorage.setItem("invalidTokens", JSON.stringify(invalidTokens));
+      localStorage.removeItem("user");
+      alert("🔒 Déconnecté. Votre jeton est maintenant invalide.");
+      window.location.reload();
+    }
+  } else{
+    alert("❌ Aucun compte connecté.");
+  }
+};
+</script>
+
+</body>
 </html>
