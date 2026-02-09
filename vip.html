@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIP - Niveaux</title>
+<style>
+body {
+  margin:0;
+  font-family:'Arial',sans-serif;
+  background: radial-gradient(circle at top,#1a001f,#3b0066);
+  color:white;
+  overflow-x:hidden;
+}
+nav {
+  display:flex;
+  justify-content:space-around;
+  padding:15px;
+  background:#3a0066;
+  box-shadow:0 4px 15px rgba(0,0,0,0.7);
+}
+nav a {color:white;text-decoration:none;font-weight:bold;transition:0.3s;}
+nav a:hover {color:#c77dff;}
+.container {
+  max-width:900px;
+  margin:50px auto;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:20px;
+}
+.vip-card {
+  width:200px;
+  height:280px;
+  background: rgba(80,0,130,0.9);
+  border-radius:20px;
+  text-align:center;
+  padding:20px;
+  box-shadow:0 15px 40px rgba(199,125,255,0.7);
+  transition: transform 0.6s ease, box-shadow 0.6s ease;
+  transform-style: preserve-3d;
+}
+.vip-card:hover {
+  transform: rotateY(15deg) rotateX(5deg) scale(1.05);
+  box-shadow:0 25px 50px rgba(199,125,255,0.9);
+}
+.vip-badge {
+  width:80px;
+  height:80px;
+  margin:0 auto 15px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#c77dff,#9b5de5);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:1.5rem;
+  color:white;
+  box-shadow:0 0 15px rgba(255,255,255,0.7);
+  transition: transform 0.5s, box-shadow 0.5s;
+}
+.vip-badge:hover {
+  transform:scale(1.2);
+  box-shadow:0 0 30px rgba(255,200,255,0.9);
+}
+h2,h3,p {margin:8px 0;animation:fadeInUp 1s ease;}
+@keyframes fadeInUp {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1; transform:translateY(0);}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Accueil</a>
+  <a href="taches.html">Tâches</a>
+  <a href="vip.html">VIP</a>
+  <a href="profil.html">Profil</a>
+</nav>
+
+<div class="container" id="vipContainer">
+  <!-- Badges VIP -->
+</div>
+
+<script>
+// --- Vérification utilisateur ---
+let user = JSON.parse(localStorage.getItem("user"));
+if(!user){
+  alert("❌ Vous devez créer un compte pour accéder aux VIP !");
+  window.location.href = "index.html";
+}
+
+// --- Niveaux VIP ---
+const vipLevels = [
+  {level:"G1", coinsRate:"1000 coins = 100 FC", description:"Tâches niveau débutant"},
+  {level:"G2", coinsRate:"1000 coins = 400 FC", description:"Tâches niveau intermédiaire"},
+  {level:"G3", coinsRate:"1000 coins = 700 FC", description:"Tâches niveau avancé"},
+  {level:"G4", coinsRate:"1000 coins = 1000 FC", description:"Tâches niveau expert"}
+];
+
+const container = document.getElementById("vipContainer");
+
+// --- Affichage badges ---
+vipLevels.forEach(vip=>{
+  const card = document.createElement("div");
+  card.className = "vip-card";
+
+  const badge = document.createElement("div");
+  badge.className = "vip-badge";
+  badge.innerText = vip.level;
+
+  const coins = document.createElement("p");
+  coins.innerText = vip.coinsRate;
+
+  const desc = document.createElement("p");
+  desc.innerText = vip.description;
+
+  card.appendChild(badge);
+  card.appendChild(coins);
+  card.appendChild(desc);
+
+  // --- Coloriser le badge si c'est le niveau de l'utilisateur ---
+  if(user.token === vip.level){
+    badge.style.background = "linear-gradient(135deg,#ffdd00,#ff9900)";
+    badge.style.boxShadow = "0 0 30px #ffdd00, 0 0 60px #ff9900";
+  }
+
+  container.appendChild(card);
+});
+</script>
+
+</body>
+</html>
